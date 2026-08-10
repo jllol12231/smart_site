@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: smart-site-backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 最小闭环：单机 MySQL；后续接入 Redis 作为会话/缓存（见项目计划书）
+    url: jdbc:mysql://localhost:3306/smart_site?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    # 本机 MySQL root 密码（也支持环境变量 DB_PASSWORD 覆盖）
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+
+# JWT 配置（会话无状态化，最小闭环暂不引入 Redis 存储 token）
+jwt:
+  secret: SmartSite2026SecretKeyForJwtSigningMustBeLongEnough!123
+  expire-hours: 24
+
+# AI 智能识别服务配置
+ai:
+  server-url: http://localhost:5000          # Flask AI 推理服务
+  ffmpeg-path: D:/work/tools/videoUtil/ffmpeg/bin/ffmpeg.exe  # 视频截帧工具
+  capture-dir: D:/work/smart-site/backend/src/main/resources/static/ai-capture  # 告警截图目录(static可访问)
+  interval-ms: 30000                         # 截帧检测周期(毫秒)
